@@ -1,14 +1,11 @@
 ---
-title: API Reference
+title: Hackwagon API Reference
 
 language_tabs: # must be one of https://git.io/vQNgJ
-  - shell
-  - ruby
-  - python
-  - javascript
+  - javascsript
 
 toc_footers:
-  - <a href='#'>Sign Up for a Developer Key</a>
+  - <a href='mailto:hello@hackwagon.com'>Sign Up for a Developer Key</a>
   - <a href='https://github.com/lord/slate'>Documentation Powered by Slate</a>
 
 includes:
@@ -19,121 +16,115 @@ search: true
 
 # Introduction
 
-Welcome to the Kittn API! You can use our API to access Kittn API endpoints, which can get information on various cats, kittens, and breeds in our database.
+Welcome to the Hackwagon API! You can use our API to access Hackwagon API endpoints, which currently only allows our approved partners to access certain protected endpoints. More to come soon.
 
-We have language bindings in Shell, Ruby, Python, and JavaScript! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.
+We have language bindings in REST for now only, and more to come. You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.
 
-This example API documentation page was created with [Slate](https://github.com/lord/slate). Feel free to edit it and use it as a base for your own API's documentation.
+The API endpoint for Hackwagon's API follows the following structure: [https://api.hackwagon.com/v1/](https://api.hackwagon.com/v1/)
+
+<!-- This example API documentation page was created with [Slate](https://github.com/lord/slate). Feel free to edit it and use it as a base for your own API's documentation. -->
 
 # Authentication
 
-> To authorize, use this code:
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-```
-
-```shell
-# With shell, you can just pass the correct header with each request
-curl "api_endpoint_here"
-  -H "Authorization: meowmeowmeow"
-```
+> Example API call with embedded API key:
 
 ```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
+fetch('https://api.hackwagon.com/v1/example', {
+  method: "POST",
+  headers: {
+    'Content-Type': 'application/json',
+    'X-API-Key': 'sk_superawesomesecretkey',
+    'X-App-Id': 'randomappid'
+  },
+  body: JSON.stringify({
+    key: 'value'
+  })
+}).then(function(response) {
+  return response.json()
+}).catch(function(ex) {
+  console.log('parsing failed', ex)
+})
 ```
 
-> Make sure to replace `meowmeowmeow` with your API key.
+> Make sure to replace `sk_superawesomesecretkey` with your API key, and `randomappid` with your Application id.
 
-Kittn uses API keys to allow access to the API. You can register a new Kittn API key at our [developer portal](http://example.com/developers).
+Hackwagon uses API keys and Application Ids to allow access to the API. You can register a new Hackwagon API key by contacting us at [hello@hackwagon.com](mailto:hello@hackwagon.com).
 
-Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:
+Hackwagon expects for the API key and Application Id to be included in all API requests to the server in the header that looks like the following:
 
-`Authorization: meowmeowmeow`
+`X-API-Key: sk_superawesomesecretkey`
+
+`X-App-Id: randomappid`
+
+From here on it is expected that all requests contain the API key and application Id header.
 
 <aside class="notice">
-You must replace <code>meowmeowmeow</code> with your personal API key.
+You must replace <code>sk_superawesomesecretkey</code> with your personal API key, and <code>randomappid</code> with your personal Application Id.
 </aside>
 
-# Kittens
+# Queue System
 
-## Get All Kittens
+## Appending Queue Number
 
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get()
-```
-
-```shell
-curl "http://example.com/api/kittens"
-  -H "Authorization: meowmeowmeow"
-```
+> Example API call:
 
 ```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let kittens = api.kittens.get();
+fetch('https://api.hackwagon.com/v1/company_queue', {
+  method: "POST",
+  body: JSON.stringify({
+    merchantId: 'value',
+    number: '010',
+  })
+}).then(function(response) {
+  return response.json()
+}).catch(function(ex) {
+  console.log('parsing failed', ex)
+})
 ```
 
-> The above command returns JSON structured like this:
+> Request Body:
 
 ```json
-[
-  {
-    "id": 1,
-    "name": "Fluffums",
-    "breed": "calico",
-    "fluffiness": 6,
-    "cuteness": 7
-  },
-  {
-    "id": 2,
-    "name": "Max",
-    "breed": "unknown",
-    "fluffiness": 5,
-    "cuteness": 10
-  }
-]
+{
+  "merchantId": "string",
+  "number": "string"
+}
 ```
 
-This endpoint retrieves all kittens.
+> Expected response structure:
+
+```json
+{
+  "status": "success|failed",
+  "message": "A message detailing the success or error message"
+}
+```
+
+This endpoint appends a new queue number to be displayed in our physical devices located around Singapore. By specifying a `merchantId`, you'll be able to target a specific device. The `number` is the queue number you wish to display on the device (try to keep it to 3 characters or less).
 
 ### HTTP Request
 
-`GET http://example.com/api/kittens`
+`POST http://api.hackwagon.com/v1/company_queue`
 
 ### Query Parameters
 
-Parameter | Default | Description
+Parameter | Expects | Description
 --------- | ------- | -----------
-include_cats | false | If set to true, the result will also include cats.
-available | true | If set to false, the result will include kittens that have already been adopted.
+merchantId | string | This is the Id you assign to your own merchants in your own applications. This key will be stored by us, so your application can identify the physical device.
+number | string | This number is supposed to be taken in as a string. Keep it to 3 characters or less.
 
-<aside class="success">
-Remember — a happy kitten is an authenticated kitten!
+<aside class="notice">
+The <code>merchantId</code> must be provided to Hackwagon's team so we can assign it to each unique physical device for your identification.
 </aside>
 
-## Get a Specific Kitten
+### Response Parameters
+
+Parameter | Possible Value(s) | Description
+--------- | ------- | -----------
+status | success,failed | This describes whether your API call was a success or failure
+message | string | This is a success/error description
+
+<!-- ## Get a Specific Kitten
 
 ```ruby
 require 'kittn'
@@ -236,4 +227,4 @@ This endpoint deletes a specific kitten.
 Parameter | Description
 --------- | -----------
 ID | The ID of the kitten to delete
-
+ -->
