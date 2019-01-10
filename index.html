@@ -201,7 +201,7 @@
       <script src="javascripts/all.js"></script>
   </head>
 
-  <body class="index" data-languages="[&quot;javascsript&quot;]">
+  <body class="index" data-languages="[&quot;javascript&quot;,&quot;python&quot;]">
     <a href="#" id="nav-button">
       <span>
         NAV
@@ -211,7 +211,8 @@
     <div class="toc-wrapper">
       <img src="images/logo.png" class="logo" alt="Logo" />
         <div class="lang-selector">
-              <a href="#" data-language-name="javascsript">javascsript</a>
+              <a href="#" data-language-name="javascript">javascript</a>
+              <a href="#" data-language-name="python">python</a>
         </div>
         <div class="search">
           <input type="text" class="search" id="input-search" placeholder="Search">
@@ -229,6 +230,22 @@
               <ul class="toc-list-h2">
                   <li>
                     <a href="#appending-queue-number" class="toc-h2 toc-link" data-title="Appending Queue Number">Appending Queue Number</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#registrations" class="toc-h1 toc-link" data-title="Registrations">Registrations</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#getting-registration-dump" class="toc-h2 toc-link" data-title="Getting Registration Dump">Getting Registration Dump</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#classes" class="toc-h1 toc-link" data-title="Classes">Classes</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#getting-class-dump" class="toc-h2 toc-link" data-title="Getting Class Dump">Getting Class Dump</a>
                   </li>
               </ul>
           </li>
@@ -271,6 +288,12 @@
 <span class="p">}).</span><span class="k">catch</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">ex</span><span class="p">)</span> <span class="p">{</span>
   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'parsing failed'</span><span class="p">,</span> <span class="nx">ex</span><span class="p">)</span>
 <span class="p">})</span>
+</code></pre><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="s">"https://api.hackwagon.com/v1/example"</span>
+<span class="n">headers</span> <span class="o">=</span> <span class="p">{</span> <span class="s">'Content-Type'</span><span class="p">:</span> <span class="s">'application/json'</span><span class="p">,</span> <span class="s">'X-API-Key'</span><span class="p">:</span> <span class="s">'sk_superawesomesecretkey'</span><span class="p">,</span> <span class="s">'X-App-Id'</span><span class="p">:</span> <span class="s">'randomappid'</span> <span class="p">}</span>
+<span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
 </code></pre>
 <blockquote>
 <p>Make sure to replace <code>sk_superawesomesecretkey</code> with your API key, and <code>randomappid</code> with your Application id.</p>
@@ -304,6 +327,12 @@ You must replace <code>sk_superawesomesecretkey</code> with your personal API ke
 <span class="p">}).</span><span class="k">catch</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">ex</span><span class="p">)</span> <span class="p">{</span>
   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'parsing failed'</span><span class="p">,</span> <span class="nx">ex</span><span class="p">)</span>
 <span class="p">})</span>
+</code></pre><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="s">"https://api.hackwagon.com/v1/company_queue"</span>
+<span class="n">headers</span> <span class="o">=</span> <span class="p">{</span> <span class="s">'Content-Type'</span><span class="p">:</span> <span class="s">'application/json'</span><span class="p">,</span> <span class="s">'X-API-Key'</span><span class="p">:</span> <span class="s">'sk_superawesomesecretkey'</span><span class="p">,</span> <span class="s">'X-App-Id'</span><span class="p">:</span> <span class="s">'randomappid'</span> <span class="p">}</span>
+<span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
 </code></pre>
 <blockquote>
 <p>Request Body:</p>
@@ -364,6 +393,299 @@ The <code>merchantId</code> must be provided to Hackwagon's team so we can assig
 <td>message</td>
 <td>string</td>
 <td>This is a success/error description</td>
+</tr>
+</tbody></table>
+<h1 id='registrations'>Registrations</h1><h2 id='getting-registration-dump'>Getting Registration Dump</h2>
+<blockquote>
+<p>Example API call:</p>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="nx">fetch</span><span class="p">(</span><span class="s1">'https://api.hackwagon.com/v1/registrations/dump'</span><span class="p">,</span> <span class="p">{</span>
+  <span class="na">method</span><span class="p">:</span> <span class="s2">"GET"</span>
+<span class="p">}).</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">response</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">response</span><span class="p">.</span><span class="nx">json</span><span class="p">()</span>
+<span class="p">}).</span><span class="k">catch</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">ex</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'parsing failed'</span><span class="p">,</span> <span class="nx">ex</span><span class="p">)</span>
+<span class="p">})</span>
+</code></pre><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="s">"https://api.hackwagon.com/v1/registrations/dump"</span>
+<span class="n">headers</span> <span class="o">=</span> <span class="p">{</span> <span class="s">"X-API-Key"</span><span class="p">:</span> <span class="s">"sk_superawesomesecretkey"</span> <span class="p">}</span>
+<span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+</code></pre>
+<blockquote>
+<p>Expected response structure:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">[{</span><span class="w">
+  </span><span class="s2">"_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"userId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"classId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"studentDetails"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"fullName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"phone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"dateOfBirth"</span><span class="p">:</span><span class="w"> </span><span class="s2">"date"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"organisation"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"subsidyTier"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"citizenship"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"diet"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"sponsorship"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"country"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"createdAt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"date"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"deposit"</span><span class="p">:</span><span class="w"> </span><span class="s2">"boolean"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"updatedAt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"date"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"formId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"matriculationLetterId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="w">
+</span><span class="p">}]</span><span class="w">
+</span></code></pre>
+<p>This endpoint dumps all the data in our registration system. By specifying an API key with appropriate permissions, you&#39;ll be able to receive a dump of the data. NRIC of students has been redacted for the sake of privacy.</p>
+<h3 id='http-request-2'>HTTP Request</h3>
+<p><code>GET http://api.hackwagon.com/v1/registrations/dump</code></p>
+<h3 id='response-parameters-2'>Response Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Possible Value(s)</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>_id</td>
+<td>random_id</td>
+<td>Unique id for the record</td>
+</tr>
+<tr>
+<td>userId</td>
+<td>random_id</td>
+<td>User that registered under this registration record</td>
+</tr>
+<tr>
+<td>classId</td>
+<td>random_id</td>
+<td>Unique class id, could be either DS101 classes or DS102 classes</td>
+</tr>
+<tr>
+<td>status</td>
+<td>pending-student-verification,pending-manual-verification,slot-confirmed,slot-rejected,student-slot-confirmed,slot-review</td>
+<td>Could be any one of the possible values</td>
+</tr>
+<tr>
+<td>studentDetails</td>
+<td>object</td>
+<td>An object detailing the student&#39;s details. Details should be self explanatory</td>
+</tr>
+<tr>
+<td>createdAt</td>
+<td>date</td>
+<td>A JavaScript date object detailing when the student created the registration record (sign up date)</td>
+</tr>
+<tr>
+<td>updatedAt</td>
+<td>date</td>
+<td>A JavaScript date object detailing when the registration record was last updated,</td>
+</tr>
+<tr>
+<td>deposit</td>
+<td>boolean</td>
+<td>Did the student confirm their slot by placing a $100 deposit</td>
+</tr>
+<tr>
+<td>formId</td>
+<td>string</td>
+<td>An id to identify the student&#39;s uploaded form 1 or form 2 file (optional)</td>
+</tr>
+<tr>
+<td>matriculationLetterId</td>
+<td>string</td>
+<td>An id to identify the student&#39;s uploaded matriculation letter (optional)</td>
+</tr>
+<tr>
+<td>elevenBId</td>
+<td>string</td>
+<td>An id to identify the student&#39;s uploaded eleven B (optional)</td>
+</tr>
+<tr>
+<td>serviceTranscriptId</td>
+<td>string</td>
+<td>An id to identify the student&#39;s uploaded service transcript (optional)</td>
+</tr>
+<tr>
+<td>citrepId</td>
+<td>string</td>
+<td>An id to identify the student&#39;s citrep registration id</td>
+</tr>
+</tbody></table>
+<h1 id='classes'>Classes</h1><h2 id='getting-class-dump'>Getting Class Dump</h2>
+<blockquote>
+<p>Example API call:</p>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="nx">fetch</span><span class="p">(</span><span class="s1">'https://api.hackwagon.com/v1/classes/dump'</span><span class="p">,</span> <span class="p">{</span>
+  <span class="na">method</span><span class="p">:</span> <span class="s2">"GET"</span>
+<span class="p">}).</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">response</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">response</span><span class="p">.</span><span class="nx">json</span><span class="p">()</span>
+<span class="p">}).</span><span class="k">catch</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">ex</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'parsing failed'</span><span class="p">,</span> <span class="nx">ex</span><span class="p">)</span>
+<span class="p">})</span>
+</code></pre><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="s">"https://api.hackwagon.com/v1/classes/dump"</span>
+<span class="n">headers</span> <span class="o">=</span> <span class="p">{</span> <span class="s">"X-API-Key"</span><span class="p">:</span> <span class="s">"sk_superawesomesecretkey"</span> <span class="p">}</span>
+<span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+</code></pre>
+<blockquote>
+<p>Expected response structure:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">[{</span><span class="w">
+  </span><span class="s2">"_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"zuhvEW3HR3oY8fPND"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"courseId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"RoaRGKXjyi7qFrqav"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"hoursPerLesson"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"classDates"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="s2">"2018-05-21T11:00:17.499Z"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"2018-05-28T11:00:17.499Z"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"2018-06-04T11:00:17.499Z"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"2018-06-11T11:00:17.499Z"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"2018-06-18T11:00:17.499Z"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"2018-06-25T11:00:17.499Z"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"2018-07-02T11:00:17.499Z"</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="s2">"openForRegistration"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"forTier"</span><span class="p">:</span><span class="w"> </span><span class="s2">"students"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"classList"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="s2">"BHnDwZn8RvfbKciBz"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"ZpsFmFCozBxmZuwSw"</span><span class="p">,</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="s2">"instructors"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+  </span><span class="s2">"teachingAssistants"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+  </span><span class="s2">"attendanceList"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"BHnDwZn8RvfbKciBz"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"0"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"attended"</span><span class="w">
+          </span><span class="p">},</span><span class="w">
+          </span><span class="s2">"1"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"attended"</span><span class="w">
+          </span><span class="p">},</span><span class="w">
+          </span><span class="s2">"2"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"attended"</span><span class="w">
+          </span><span class="p">},</span><span class="w">
+          </span><span class="s2">"3"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"attended"</span><span class="w">
+          </span><span class="p">},</span><span class="w">
+          </span><span class="s2">"4"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"attended"</span><span class="w">
+          </span><span class="p">},</span><span class="w">
+          </span><span class="s2">"5"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"absent"</span><span class="w">
+          </span><span class="p">},</span><span class="w">
+          </span><span class="s2">"6"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"substitute"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"classId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"AuHvsm3wR3oY8fL2d-6"</span><span class="w">
+          </span><span class="p">}</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"createdAt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2018-08-03T07:03:17.675Z"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"updatedAt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2018-10-08T04:30:20.330Z"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"chatInviteLink"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://t.me/joinchat/Aa-JPg9dBIrDDd_Orn0x_A"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"cohort"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
+</span><span class="p">}]</span><span class="w">
+</span></code></pre>
+<p>This endpoint dumps all the data in our class system. By specifying an API key with appropriate permissions, you&#39;ll be able to receive a dump of the data.</p>
+<h3 id='http-request-3'>HTTP Request</h3>
+<p><code>GET http://api.hackwagon.com/v1/classes/dump</code></p>
+<h3 id='response-parameters-3'>Response Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Possible Value(s)</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>_id</td>
+<td>random_id</td>
+<td>Unique id for the class</td>
+</tr>
+<tr>
+<td>courseId</td>
+<td>random_id</td>
+<td>Unique course id, could be either DS101 classes or DS102 classes</td>
+</tr>
+<tr>
+<td>hoursPerLesson</td>
+<td>integer</td>
+<td>How many hours does the class go on for</td>
+</tr>
+<tr>
+<td>classDates</td>
+<td>[ date ]</td>
+<td>An array of dates for each lesson in the class</td>
+</tr>
+<tr>
+<td>createdAt</td>
+<td>date</td>
+<td>A JavaScript date object detailing when the class was created</td>
+</tr>
+<tr>
+<td>updatedAt</td>
+<td>date</td>
+<td>A JavaScript date object detailing when the class record was last updated</td>
+</tr>
+<tr>
+<td>openForRegistration</td>
+<td>boolean</td>
+<td>Is the class still currently open for registration?</td>
+</tr>
+<tr>
+<td>forTier</td>
+<td>students,adults,both</td>
+<td>Which type of students is the class open for</td>
+</tr>
+<tr>
+<td>classList</td>
+<td>[ random_id ]</td>
+<td>An array of user ids for the students that are in the class</td>
+</tr>
+<tr>
+<td>instructors</td>
+<td>[ random_id ]</td>
+<td>An array of user ids for the instructors that are in the class</td>
+</tr>
+<tr>
+<td>teachingAssistants</td>
+<td>[ random_id ]</td>
+<td>An array of user ids for the teaching assistants that are in the class</td>
+</tr>
+<tr>
+<td>attendanceList</td>
+<td>object</td>
+<td>Used to store the attendance data</td>
+</tr>
+<tr>
+<td>attendanceList.userId</td>
+<td>object</td>
+<td>Used to store the attendance data for a user, based on his/her user id under <code>userId</code></td>
+</tr>
+<tr>
+<td>..userId.0</td>
+<td>object</td>
+<td>To retrieve a student&#39;s attendance on a particular day where <code>0</code> could be any number based on the number of lessons in <code>classDates</code> (length of classDates)</td>
+</tr>
+<tr>
+<td>..userId.0</td>
+<td>object</td>
+<td>To retrieve a student&#39;s attendance on a particular day</td>
+</tr>
+<tr>
+<td>..userId.0.status</td>
+<td>attended,absent,substitute</td>
+<td>To retrieve a student&#39;s attendance status on a particular day</td>
+</tr>
+<tr>
+<td>..userId.0.classId</td>
+<td>random_id</td>
+<td>If student is on make up, a <code>classId-lessonNum</code> will be assigned</td>
 </tr>
 </tbody></table>
 
@@ -529,7 +851,8 @@ This error section is stored in a separate file in <code>includes/_errors.md</co
       </div>
       <div class="dark-box">
           <div class="lang-selector">
-                <a href="#" data-language-name="javascsript">javascsript</a>
+                <a href="#" data-language-name="javascript">javascript</a>
+                <a href="#" data-language-name="python">python</a>
           </div>
       </div>
     </div>
