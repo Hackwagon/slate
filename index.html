@@ -223,7 +223,23 @@
             <a href="#introduction" class="toc-h1 toc-link" data-title="Introduction">Introduction</a>
           </li>
           <li>
-            <a href="#authentication" class="toc-h1 toc-link" data-title="Authentication">Authentication</a>
+            <a href="#application-authentication" class="toc-h1 toc-link" data-title="Application Authentication">Application Authentication</a>
+          </li>
+          <li>
+            <a href="#oauth-2-0-flow" class="toc-h1 toc-link" data-title="OAUTH 2.0 Flow">OAUTH 2.0 Flow</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#how-does-it-work" class="toc-h2 toc-link" data-title="How does it work?">How does it work?</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#oauth-2-0-authentication" class="toc-h1 toc-link" data-title="OAUTH 2.0 Authentication">OAUTH 2.0 Authentication</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#getting-authorised" class="toc-h2 toc-link" data-title="Getting authorised">Getting authorised</a>
+                  </li>
+              </ul>
           </li>
           <li>
             <a href="#queue-system" class="toc-h1 toc-link" data-title="Queue System">Queue System</a>
@@ -277,7 +293,7 @@
 <p>The API endpoint for Hackwagon&#39;s API follows the following structure: <a href="https://api.hackwagon.com/v1/">https://api.hackwagon.com/v1/</a></p>
 
 <!-- This example API documentation page was created with [Slate](https://github.com/lord/slate). Feel free to edit it and use it as a base for your own API's documentation. -->
-<h1 id='authentication'>Authentication</h1>
+<h1 id='application-authentication'>Application Authentication</h1>
 <blockquote>
 <p>Example API call with embedded API key:</p>
 </blockquote>
@@ -320,6 +336,122 @@
 <aside class="notice">
 You must replace <code>sk_superawesomesecretkey</code> with your personal API key, and <code>randomappid</code> with your personal Application Id.
 </aside>
+<h1 id='oauth-2-0-flow'>OAUTH 2.0 Flow</h1><h2 id='how-does-it-work'>How does it work?</h2>
+<p>The Hackwagon OAUTH 2.0 follows the standard OAUTH 2.0 specification. The expected use case of the OAUTH 2.0 system would be to allow access to protected API endpoints where users need to provide express permission to the developer for access to personal data. Inspect the following image if you&#39;re unsure of the flow:</p>
+
+<p><img src="images/OAuthWebSequenceWithConfig.png" alt="OAuthWebSequenceWithConfig" /></p>
+
+<p>To verbalise, the flow is as such:</p>
+
+<p>1) Create a client application in Hackwagon&#39;s API admin panel. A <code>client id</code> and <code>client secret</code> will be generated. You will need to provide a <code>redirect URI</code> that will be used to receive an <code>authorization code</code> as a URL parameter when user has signed in and authorised.</p>
+
+<p>2) In your application, open a window for user to sign in at <code>https://elearn.hackawgon.com/oauth/hackwagon?client_id=your_client_id&amp;redirect_uri=your_redirect_uri&amp;response_type=code</code>. Note that your <code>client id</code> and <code>redirect uri</code> are specified in the URL.</p>
+
+<p>3) When the user has signed in, they will be redirected to your specified <code>redirect uri</code>, and an <code>authorization code</code> will be included as a URL parameter. e.g. <code>https://your.domain.com/success?code=some_random_code</code></p>
+
+<p>4) The <code>authorization code</code> can then be used <em>by your server</em> to request for an <code>access token</code>. This <code>access token</code> is the token needed to perform API calls. This could be used on your server, or even on the client. To get an access token, perform a POST to <code>https://api.hackwagon.com/v1/oauth/token</code> with a <code>grant type</code>, <code>client id</code>, <code>client secret</code>, as well as the <code>authorization code</code> generated earlier. (Check out the example endpoint in the later section for more info). You will receive an <code>access token</code> if request is successful. (Note: please store the authorization code for future use, until user revokes the authorization)</p>
+
+<p>5) You can use the <code>access token</code> to perform API calls to protected endpoints.</p>
+
+<aside class="notice">
+TLDR; Create OAUTH application with Hackwagon -> Open Hackwagon OAUTH login -> Get user's authorization -> Retrieve authorization code to your server -> Get access token specific to user -> Begin calling endpoints
+</aside>
+<h1 id='oauth-2-0-authentication'>OAUTH 2.0 Authentication</h1><h2 id='getting-authorised'>Getting authorised</h2>
+<blockquote>
+<p>Example API call:</p>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="nx">fetch</span><span class="p">(</span><span class="s1">'https://api.hackwagon.com/v1/oauth/token'</span><span class="p">,</span> <span class="p">{</span>
+  <span class="na">method</span><span class="p">:</span> <span class="s2">"POST"</span><span class="p">,</span>
+  <span class="na">headers</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s1">'Content-type'</span><span class="p">:</span> <span class="s1">'application/x-www-form-urlencoded'</span>
+  <span class="p">},</span>
+  <span class="na">body</span><span class="p">:</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">({</span>
+    <span class="na">grant_type</span><span class="p">:</span> <span class="s1">'authorization_code'</span><span class="p">,</span>
+    <span class="na">client_id</span><span class="p">:</span> <span class="s1">'random_client_id(17)'</span><span class="p">,</span>
+    <span class="na">client_secret</span><span class="p">:</span> <span class="s1">'random_client_secret(30)'</span><span class="p">,</span>
+    <span class="na">code</span><span class="p">:</span> <span class="s1">'random_auth_code'</span>
+  <span class="p">})</span>
+<span class="p">}).</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">response</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">response</span><span class="p">.</span><span class="nx">json</span><span class="p">()</span>
+<span class="p">}).</span><span class="k">catch</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">ex</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'parsing failed'</span><span class="p">,</span> <span class="nx">ex</span><span class="p">)</span>
+<span class="p">})</span>
+</code></pre><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="s">"https://api.hackwagon.com/v1/oauth/token"</span>
+<span class="n">headers</span> <span class="o">=</span> <span class="p">{</span> <span class="s">'Content-Type'</span><span class="p">:</span> <span class="s">'application/x-www-form-urlencoded'</span> <span class="p">}</span>
+<span class="n">body</span> <span class="o">=</span> <span class="p">{</span><span class="s">'grant_type'</span><span class="p">:</span> <span class="s">'authorization_code'</span><span class="p">,</span> <span class="s">'client_id'</span><span class="p">:</span> <span class="s">'random_client_id(17)'</span><span class="p">,</span><span class="s">'client_secret'</span><span class="p">:</span> <span class="s">'random_client_secret(30)'</span><span class="p">,</span> <span class="s">'code'</span><span class="p">:</span> <span class="s">'random_auth_code'</span><span class="p">}</span>
+<span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">body</span><span class="o">=</span><span class="n">body</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+</code></pre>
+<blockquote>
+<p>Request Body:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"grant_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"client_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"client_secret"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<blockquote>
+<p>Expected response structure:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"access_token"</span><span class="p">:</span><span class="w"> </span><span class="s2">"random_string"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>There are certain API endpoints that are protected by the OAUTH 2.0 mechanism. i.e. if you intend to get data about a user, you will need to get their express permission through the OAUTH 2.0 flow. Such protected endpoints require the use of a <code>access_token</code> (that expires in 3600 seconds) to perform certain API calls.</p>
+<h3 id='http-request'>HTTP Request</h3>
+<p><code>POST https://api.hackwagon.com/v1/oauth/token</code></p>
+<h3 id='query-parameters'>Query Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Expects</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>merchantId</td>
+<td>string</td>
+<td>This is the Id you assign to your own merchants in your own applications. This key will be stored by us, so your application can identify the physical device.</td>
+</tr>
+<tr>
+<td>number</td>
+<td>string</td>
+<td>This number is supposed to be taken in as a string. Keep it to 3 characters or less.</td>
+</tr>
+</tbody></table>
+
+<aside class="notice">
+Note that the server only accepts a content type of <code>application/x-www-form-urlencoded</code>
+</aside>
+
+<aside class="notice">
+The <code>client_id</code> and <code>client_secret</code> can be generated in 2 manners. 1) Through the Hackwagon API admin panel 2) Through API access. The <code>code</code> parameter is also known as the authorization code, and will have to be generated via another end point.
+</aside>
+<h3 id='response-parameters'>Response Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Possible Value(s)</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>data</td>
+<td>object</td>
+<td>Contains an object of retrieved data</td>
+</tr>
+<tr>
+<td>data.access_token</td>
+<td>string</td>
+<td>This is the access token that allows for performing API calls on protected endpoints</td>
+</tr>
+</tbody></table>
 <h1 id='queue-system'>Queue System</h1><h2 id='appending-queue-number'>Appending Queue Number</h2>
 <blockquote>
 <p>Example API call:</p>
@@ -359,9 +491,9 @@ You must replace <code>sk_superawesomesecretkey</code> with your personal API ke
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 <p>This endpoint appends a new queue number to be displayed in our physical devices located around Singapore. By specifying a <code>merchantId</code>, you&#39;ll be able to target a specific device. The <code>number</code> is the queue number you wish to display on the device (try to keep it to 3 characters or less).</p>
-<h3 id='http-request'>HTTP Request</h3>
+<h3 id='http-request-2'>HTTP Request</h3>
 <p><code>POST http://api.hackwagon.com/v1/company_queue</code></p>
-<h3 id='query-parameters'>Query Parameters</h3>
+<h3 id='query-parameters-2'>Query Parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -384,7 +516,7 @@ You must replace <code>sk_superawesomesecretkey</code> with your personal API ke
 <aside class="notice">
 The <code>merchantId</code> must be provided to Hackwagon's team so we can assign it to each unique physical device for your identification.
 </aside>
-<h3 id='response-parameters'>Response Parameters</h3>
+<h3 id='response-parameters-2'>Response Parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -449,9 +581,9 @@ The <code>merchantId</code> must be provided to Hackwagon's team so we can assig
 </span><span class="p">}]</span><span class="w">
 </span></code></pre>
 <p>This endpoint dumps all the data in our registration system. By specifying an API key with appropriate permissions, you&#39;ll be able to receive a dump of the data. NRIC of students has been redacted for the sake of privacy.</p>
-<h3 id='http-request-2'>HTTP Request</h3>
+<h3 id='http-request-3'>HTTP Request</h3>
 <p><code>GET http://api.hackwagon.com/v1/registrations/dump</code></p>
-<h3 id='response-parameters-2'>Response Parameters</h3>
+<h3 id='response-parameters-3'>Response Parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -600,9 +732,9 @@ The <code>merchantId</code> must be provided to Hackwagon's team so we can assig
 </span><span class="p">}]</span><span class="w">
 </span></code></pre>
 <p>This endpoint dumps all the data in our class system. By specifying an API key with appropriate permissions, you&#39;ll be able to receive a dump of the data.</p>
-<h3 id='http-request-3'>HTTP Request</h3>
+<h3 id='http-request-4'>HTTP Request</h3>
 <p><code>GET http://api.hackwagon.com/v1/classes/dump</code></p>
-<h3 id='response-parameters-3'>Response Parameters</h3>
+<h3 id='response-parameters-4'>Response Parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -825,9 +957,9 @@ The <code>merchantId</code> must be provided to Hackwagon's team so we can assig
 </span><span class="p">}]</span><span class="w">
 </span></code></pre>
 <p>This endpoint dumps all the data in our user system. By specifying an API key with appropriate permissions, you&#39;ll be able to receive a dump of the data.</p>
-<h3 id='http-request-4'>HTTP Request</h3>
+<h3 id='http-request-5'>HTTP Request</h3>
 <p><code>GET http://api.hackwagon.com/v1/users/dump</code></p>
-<h3 id='response-parameters-4'>Response Parameters</h3>
+<h3 id='response-parameters-5'>Response Parameters</h3>
 <!-- Parameter | Possible Value(s) | Description
 --------- | ------- | -----------
 _id | random_id | Unique id for the class
