@@ -682,7 +682,12 @@ The <code>merchantId</code> must be provided to Hackwagon's team so we can assig
   <span class="na">body</span><span class="p">:</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">({</span>
     <span class="na">nric</span><span class="p">:</span> <span class="s1">'S1234567A'</span><span class="p">,</span>
     <span class="na">access_token</span><span class="p">:</span> <span class="s2">"OAUTH_ACCESS_TOKEN"</span>
-  <span class="p">})</span>
+  <span class="p">}),</span>
+  <span class="na">headers</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s1">'Content-Type'</span><span class="p">:</span> <span class="s1">'application/json'</span><span class="p">,</span>
+    <span class="s1">'X-API-Key'</span><span class="p">:</span> <span class="s1">'sk_superawesomesecretkey'</span><span class="p">,</span>
+    <span class="s1">'X-App-Id'</span><span class="p">:</span> <span class="s1">'randomappid'</span>
+  <span class="p">},</span>
 <span class="p">}).</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">response</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">return</span> <span class="nx">response</span><span class="p">.</span><span class="nx">json</span><span class="p">();</span>
 <span class="p">}).</span><span class="k">catch</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">ex</span><span class="p">)</span> <span class="p">{</span>
@@ -695,15 +700,15 @@ The <code>merchantId</code> must be provided to Hackwagon's team so we can assig
   <span class="n">nric</span><span class="p">:</span> <span class="s">"S1234567A"</span><span class="p">,</span>
   <span class="n">access_token</span><span class="p">:</span> <span class="s">"OAUTH_ACCESS_TOKEN"</span>
 <span class="p">}</span>
-<span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+<span class="n">headers</span> <span class="o">=</span> <span class="p">{</span> <span class="s">"X-API-Key"</span><span class="p">:</span> <span class="s">"sk_superawesomesecretkey"</span> <span class="p">}</span>
+<span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
 <span class="n">data</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
 </code></pre>
 <blockquote>
 <p>Request Body:</p>
 </blockquote>
 <pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-  </span><span class="s2">"merchantId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"access_token"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="w">
+  </span><span class="s2">"nric"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 <blockquote>
@@ -729,11 +734,6 @@ The <code>merchantId</code> must be provided to Hackwagon's team so we can assig
 <td>nric</td>
 <td>string</td>
 <td>Student&#39;s nric</td>
-</tr>
-<tr>
-<td>access_token</td>
-<td>string</td>
-<td>OAuth access token retrieved after admin/instructor has signed in</td>
 </tr>
 </tbody></table>
 <h2 id='getting-class-dump'>Getting Class Dump</h2>
